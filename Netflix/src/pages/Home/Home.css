@@ -25,6 +25,8 @@
     max-width:700px;
     font-size:17px;
     margin-bottom:20px;
+    font-weight:bold;
+    line-height:30px;
 }
 
 .hero-btns{
@@ -64,6 +66,11 @@
     background:#6d6d6e66;
 }
 
+.hero-title{
+    font-size:120px;
+    padding-bottom:30px;
+}
+
 .more-cards{
     padding-left:6%;
 }
@@ -98,6 +105,13 @@
         padding-left:4%;
     }
 }
+
+@media (max-width:585px){
+    .hero-title{
+        font-size:50px;
+    }
+}
+
 @media(max-width:500px){
     .caption-img{
         display:none;
@@ -110,5 +124,22 @@
         padding:4px 10px;
         gap:5px;
         font-size:10px;
+    }
+}
+
+@media(max-width:465px){
+    .hero-title{
+        font-size:30px;
+        position: relative;
+        top:30px;
+    }
+
+    .hero-caption p{
+        font-size:12px;
+        line-height:1.5;
+    }
+
+    .hero-btns{
+        margin-bottom:10px;
     }
 }

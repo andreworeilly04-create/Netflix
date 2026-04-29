@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Home.css'
 import NavBar from '../../components/Navbar/Navbar'
 import hero from '../../assets/hero_banner.jpg'
@@ -7,30 +7,58 @@ import play from '../../assets/Play_icon.png'
 import info from '../../assets/info_icon.png'
 import TitleCards from '../../components/TitleCards/TitleCards'
 import Footer from '../../components/Footer/Footer'
+import Player from '../../pages/Player/Player'
+import { Link } from 'react-router-dom'
+
+const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZGZhNTQwODQ2NzRhNmQwYWFiYzVlNDM1NTllYmYyYyIsIm5iZiI6MTc3NzE1MzA1Ni43NTksInN1YiI6IjY5ZWQzNDIwYzA1YzAwZmFiNWI0ZWRhOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Yd4Y3HwVFcibrqy7_IGIJY8CoU4FYx1-ogVz86fm8fs'
+    }
+};
+
 
 const Home = () => {
+
+    const [featuredMovie, setFeaturedMovie] = useState(null);
+
+
+    useEffect(() => {
+        fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options)
+            .then(res => res.json())
+            .then(res => {
+                if (res.results && res.results.length > 0){
+                setFeaturedMovie(res.results[0]);
+                }
+            })
+            .catch(err => console.error(err));
+    }, [])
+
+
     return (
         <div className="home">
-            <NavBar />
+
             <div className="hero">
-                <img src={hero} alt="Hero" className="banner-img" />
+                <img src={featuredMovie ? `https://image.tmdb.org/t/p/original${featuredMovie?.backdrop_path}` : hero} alt="Hero" className="banner-img" />
                 <div className="hero-caption">
-                    <img src={hero_caption} alt="Hero Title" className="caption-img" />
-                    <p>Discovering his ties to a secret ancient order, a young man living in modern Istanbul embarks on a quest to save the city from an immortal enemy</p>
+                    <h1 className="hero-title">
+                        {featuredMovie ? featuredMovie.original_title : ""}
+                        </h1>
+                    <p>{featuredMovie ? featuredMovie.overview : ""}</p>
                     <div className="hero-btns">
-                        <button className="btn"><img src={play} alt="Play Icon" />Play</button>
-                        <button className="btn dark-btn"><img src={info} alt="Info Icon" />More Info</button>
+                        {featuredMovie && (<Link to={`/player/${featuredMovie.id}`}><button className="btn"><img src={play} alt="Play Icon"/>Play</button></Link>
+                        )}
                     </div>
                     <TitleCards />
                 </div>
             </div>
             <div className="more-cards">
-                <TitleCards title={"Blockbuster Movies"} category={"top_rated"}/>
-                <TitleCards title={"Only on Netflix"} category={"popular"}/>
-                <TitleCards title={"Upcoming"} category={"upcoming"}/>
-                <TitleCards title={"Top Pics for you"} category={"now_playing"}/>
+                <TitleCards title={"Blockbuster Movies"} category={"top_rated"} />
+                <TitleCards title={"Only on Netflix"} category={"popular"} />
+                <TitleCards title={"Upcoming"} category={"upcoming"} />
+                <TitleCards title={"Top Pics for you"} category={"now_playing"} />
             </div>
-            <Footer/>
         </div>
     )
 }

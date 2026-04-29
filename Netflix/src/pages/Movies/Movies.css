@@ -1,0 +1,19 @@
+.movies_title--container{
+    padding-top:90px;
+    padding-bottom:40px;
+}
+
+.movie-list{
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    width:100%;
+    padding-bottom:20px;
+    padding-left:12px;
+    padding-right:12px;
+    gap:30px;
+}
+
+.movies_title{
+    text-align: center;
+    padding-bottom:30px;
+}
